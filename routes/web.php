@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Todo2Controller;
+use App\Http\Controllers\UserController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,4 +20,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/todo',[Todo2Controller::class, 'index'])->name('todo.index');
+Route::get('/todo/create',[Todo2Controller::class, 'create'])->name('todo.create');
+Route::get('/todo/edit',[Todo2Controller::class, 'edit'])->name('todo.edit');
+
+Route::get('/user',[UserController::class, 'index'])->name('user.index');
 require __DIR__.'/auth.php';
