@@ -10,10 +10,10 @@ class Todo2Controller extends Controller
 {
     public function index()
     {
-        $todos = Todo2::all();
-        // $todos = Todo2::where('user_id', Auth::id())->get();
-        dd($todos);
-        return view('todo.index',);
+        //todos #todos = Todo2::all();
+        $todos = Todo2::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        // dd
+        return view('todo.index', compact('todos'));
     }
     
 
@@ -26,6 +26,21 @@ class Todo2Controller extends Controller
     public function edit()
     {
         return view('todo.edit');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|max:255',
+        
+        ]);
+
+        $todo = Todo2::create([
+            'title' => $request->input('title'),
+            'user_id' => Auth::id(),
+        ]);
+
+        return redirect()->route('todo.index')->with('success', 'Todo created successfully.');
     }
 
    
