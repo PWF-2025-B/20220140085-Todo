@@ -22,5 +22,19 @@ Route::middleware('auth')->group(function () {
 });
 
 
+Route::patch('/todo/{todo}/complete', [Todo2Controller::class, 'complete'])->name('todo.complete');
+Route::patch('/todo/{todo}/uncomplete', [Todo2Controller::class, 'uncomplete'])->name('todo.uncomplete');
+
+
 Route::get('/user',[UserController::class, 'index'])->name('user.index');
+Route::patch('/user/{user}/makeadmin', [UserController::class, 'makeadmin'])->name('user.makeadmin');
+Route::patch('/user/{user}/removeadmin', [UserController::class, 'removeadmin'])->name('user.removeadmin');
+
+Route::get('/todo/{todo}/edit', [Todo2Controller::class, 'edit'])->name('todo.edit');
+Route::patch('/todo/{todo}', [Todo2Controller::class, 'update'])->name('todo.update');
+
+Route::delete('/todo/{todo}', [Todo2Controller::class, 'destroy'])->name('todo.destroy');
+Route::delete('/todo', [Todo2Controller::class, 'destroyCompleted'])->name('todo.destroyCompleted');
+Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+
 require __DIR__.'/auth.php';

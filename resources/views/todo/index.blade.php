@@ -8,28 +8,27 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-6">
         <div class="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
             <div class="p-6 pt-2 text-gray-900 dark:text-gray-100">
+                {{-- Button Create --}}
                 <div class="flex items-center justify-between mb-4">
                     <x-create-button href="{{ route('todo.create') }}" />
                 </div>
 
                 {{-- Success & Danger Message --}}
-                <div>
-                    @if (session('success'))
-                        <p x-data="{ show: true }" x-show="show" x-transition
-                            x-init="setTimeout(() => show = false, 5000)"
-                            class="text-sm text-green-600 dark:text-green-400">
-                            {{ session('success') }}
-                        </p>
-                    @endif
+                @if (session('success'))
+                    <p x-data="{ show: true }" x-show="show" x-transition
+                       x-init="setTimeout(() => show = false, 5000)"
+                       class="text-sm text-green-600 dark:text-green-400">
+                        {{ session('success') }}
+                    </p>
+                @endif
 
-                    @if (session('danger'))
-                        <p x-data="{ show: true }" x-show="show" x-transition
-                            x-init="setTimeout(() => show = false, 5000)"
-                            class="text-sm text-red-600 dark:text-red-400">
-                            {{ session('danger') }}
-                        </p>
-                    @endif
-                </div>
+                @if (session('danger'))
+                    <p x-data="{ show: true }" x-show="show" x-transition
+                       x-init="setTimeout(() => show = false, 5000)"
+                       class="text-sm text-red-600 dark:text-red-400">
+                        {{ session('danger') }}
+                    </p>
+                @endif
             </div>
 
             {{-- Table --}}
@@ -50,19 +49,49 @@
                                         {{ $data->title }}
                                     </a>
                                 </td>
+
                                 <td class="px-6 py-4">
                                     @if (!$data->is_done)
-                                        <span class="inline-flex items-center bg-red-100 text-red-800 text-sm font-medium px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
-                                            On Going
+                                        <span class="inline-block bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full dark:bg-blue-500 dark:text-white">
+                                            Ongoing
                                         </span>
                                     @else
-                                        <span class="inline-flex items-center bg-green-100 text-green-800 text-sm font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
-                                            Done
+                                        <span class="inline-block bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full dark:bg-green-500 dark:text-white">
+                                            Completed
                                         </span>
                                     @endif
                                 </td>
+
                                 <td class="px-6 py-4">
-                                    {{-- Tambahkan tombol edit/delete jika perlu --}}
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        @if (!$data->is_done)
+                                            <form action="{{ route('todo.complete', $data) }}" method="POST">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="text-green-600 dark:text-green-400 hover:underline">
+                                                    Complete
+                                                </button>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('todo.uncomplete', $data) }}" method="POST">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="text-blue-600 dark:text-blue-400 hover:underline">
+                                                    Uncomplete
+                                                </button>
+                                            </form>
+                                        @endif
+
+                                        {{-- Delete Button --}}
+                                        <form action="{{ route('todo.destroy', $data) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this todo?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="inline-flex items-center px-3 py-1 bg-red-600 text-white text-xs font-semibold rounded-full hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 transition">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
@@ -74,6 +103,18 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+
+            {{-- Delete All Completed Button --}}
+            <div class="flex justify-end mt-4 px-6 pb-6">
+                <form action="{{ route('todo.destroyCompleted') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete all completed tasks?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"
+                            class="inline-flex items-center px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-md hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 transition">
+                        DELETE ALL COMPLETED TASK
+                    </button>
+                </form>
             </div>
         </div>
     </div>
