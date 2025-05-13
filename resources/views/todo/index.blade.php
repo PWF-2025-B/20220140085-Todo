@@ -37,6 +37,7 @@
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="px-6 py-3">Title</th>
+                            <th scope="col" class="px-6 py-3">Category</th>
                             <th scope="col" class="px-6 py-3">Status</th>
                             <th scope="col" class="px-6 py-3">Action</th>
                         </tr>
@@ -44,24 +45,32 @@
                     <tbody>
                         @forelse ($todos as $data)
                             <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                                {{-- Title --}}
                                 <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                     <a href="{{ route('todo.edit', $data) }}" class="hover:underline text-sm">
                                         {{ $data->title }}
                                     </a>
                                 </td>
 
+                                {{-- Category --}}
+                                <td class="px-6 py-4">
+                                    {{ optional($data->category)->title }}
+                                </td>
+
+                                {{-- Status --}}
                                 <td class="px-6 py-4">
                                     @if (!$data->is_done)
-                                        <span class="inline-block bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full dark:bg-blue-500 dark:text-white">
+                                        <span class="inline-block bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full dark:bg-blue-500">
                                             Ongoing
                                         </span>
                                     @else
-                                        <span class="inline-block bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full dark:bg-green-500 dark:text-white">
+                                        <span class="inline-block bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full dark:bg-green-500">
                                             Completed
                                         </span>
                                     @endif
                                 </td>
 
+                                {{-- Action Buttons --}}
                                 <td class="px-6 py-4">
                                     <div class="flex flex-wrap items-center gap-2">
                                         @if (!$data->is_done)
@@ -96,7 +105,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                                <td colspan="4" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
                                     No data available
                                 </td>
                             </tr>

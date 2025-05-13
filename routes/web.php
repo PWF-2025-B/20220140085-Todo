@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Todo2Controller;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoryController;
 
 // Halaman awal
 Route::get('/', function () {
@@ -29,6 +30,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/todo', [Todo2Controller::class, 'destroyCompleted'])->name('todo.destroyCompleted');
     Route::patch('/todo/{todo}/complete', [Todo2Controller::class, 'complete'])->name('todo.complete');
     Route::patch('/todo/{todo}/uncomplete', [Todo2Controller::class, 'uncomplete'])->name('todo.uncomplete');
+
+     // Category
+     Route::resource('categories', CategoryController::class)->except(['show']);
+   
 });
 
 
@@ -58,5 +63,13 @@ Route::get('/todo/{todo}/edit', [Todo2Controller::class, 'edit'])->name('todo.ed
 Route::delete('/todo/{todo}', [Todo2Controller::class, 'destroy'])->name('todo.destroy');
 Route::delete('/todo', [Todo2Controller::class, 'destroyCompleted'])->name('todo.destroyCompleted');
 Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+
+
+
+// Route untuk kategori
+Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+Route::patch('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 
 require __DIR__.'/auth.php';
