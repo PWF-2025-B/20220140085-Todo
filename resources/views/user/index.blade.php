@@ -58,14 +58,15 @@
                                 <td class="px-6 py-4">{{ $user->name }}</td>
                                 <td class="px-6 py-4">{{ $user->email }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    {{ $user->todos->count() }}
-                                    (<span class="text-green-500 dark:text-green-400">
-                                        {{ $user->todos->where('is_done', true)->count() }}
-                                    </span> /
-                                    <span class="text-blue-500 dark:text-blue-400">
-                                        {{ $user->todos->where('is_done', false)->count() }}
-                                    </span>)
-                                </td>
+    {{ $user->todos_count }}
+    (<span class="text-green-500 dark:text-green-400">
+        {{ $user->todos_completed_count }}
+    </span> /
+    <span class="text-blue-500 dark:text-blue-400">
+        {{ $user->todos_ongoing_count }}
+    </span>)
+</td>
+
                                 <td class="px-6 py-4">
                                     <div class="flex flex-wrap gap-3 items-center">
                                         {{-- Admin Actions --}}

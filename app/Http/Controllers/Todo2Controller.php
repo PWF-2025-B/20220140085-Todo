@@ -11,15 +11,17 @@ class Todo2Controller extends Controller
 {
     public function index()
     {
-        $todos = Todo2::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        $todos = Todo2::with('category')
+            ->where('user_id', Auth::id())
+            ->orderby('is_done', 'asc')
+            ->orderBy('created_at', 'desc')
+            ->simplepaginate(10);
 
-        
-
-        $todosCompleted = Todo2::where('user_id', auth()->user()->id)
+        $todosCompleted = Todo2::where('user_id', Auth::id())
             ->where('is_done', true)
             ->count();
 
-        return view('todo.index', compact('todos'));
+        return view('todo.index', compact('todos', 'todosCompleted'));
     }
 
     public function create()
