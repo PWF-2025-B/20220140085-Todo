@@ -18,7 +18,7 @@ Route::get('/dashboard', function () {
 
 
 // Grup route untuk user yang sudah login
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth','verified'])->group(function () {
 
     //Profile User
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -69,7 +69,6 @@ Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.de
 // Route untuk kategori
 Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
-Route::patch('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 
 require __DIR__.'/auth.php';
