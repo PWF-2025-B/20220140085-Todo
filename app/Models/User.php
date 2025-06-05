@@ -57,7 +57,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     {
         return $this->getKey();
     }
-    public function getJWTCustomClaims(): array
+    public function getJWTCustomClaims()
     {
         return [
             'is_admin' => $this->is_admin,

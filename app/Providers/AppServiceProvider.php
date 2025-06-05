@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Dedoc\Scramble\Scramble;
-use Dedoc\Scramble\Route;
+use illuminate\Routing\Route;
 use Illuminate\Support\Str;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('admin', function ($user) {
             return $user->is_admin == true;
         });
-        Scramble::configure()->routes(function ($route) {
+        Scramble::configure()->routes(function (Route $route) {
             return Str::startsWith($route->uri(), 'api/');
         });
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
